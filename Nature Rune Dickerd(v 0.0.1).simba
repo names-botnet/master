@@ -1,0 +1,104 @@
+program new;
+{$DEFINE SMART} // comment this line out if you don't want to use SMART
+{$i srl-6/srl.simba}
+ Pure ess  DTM := DTMFromString('mlwAAAHicfcaxCoAgAIThu0R6XpeetaU2C0chd3/QMfzh426XlKP04kPBiQs3qqUHDWEbW2D+kZLs8GuVF2Yd6A8Mmw==');
+ Nature    DTM := DTMFromString('mggAAAHicY2NgYHjBysDwGoi/APEHIL4HxDdAfEagHBB/BWJGJgYGZiD+DGQL14kyMDIyI2EmMI0LMOLAEAAAJhUKJg==');
+
+
+ Procedure FindBanker;
+ var
+  RunesInInv, x, y: Integer;
+
+ begin
+  if (not isLoggedIn()) or (tabBackpack.count() <= 1) then
+    Exit;
+
+ end;
+
+function Bank:Boolean;
+var
+  m:TTimeMarker;
+begin
+  if openBank then
+  begin
+    if bankIsOpen() then
+
+      TypeSend(BANK_PRESET, false);
+      m.start();
+      while (bankScreen.isOpen) do
+      begin
+        Wait(50 + RandomRange(30,40));
+        if m.getTime() > 3000 then
+          exit;
+      end;
+      m.reset();
+      tabBackpack.waitWhileLocked();
+      Wait(randomRange(800,920));
+      Result := tabBackpack.isFull();
+    end;
+  end;
+end;
+
+function bankIsOpen:Boolean;
+var
+  TPA:TPointArray;
+  t:TPoint;
+begin
+  colorSetting(2, 0.01, 0.61);
+  SetLength(TPA, 0);
+  while length(TPA) = 0 do
+  begin
+    FindColorsSpiralTolerance(T.y,T.y,TPA,307678,IntToBox(225,17,380,30), 7);
+    writeln(Length(TPA));
+  end;
+  Result := Length(TPA) > 20;
+end;
+
+
+
+Procedure CheckInv;
+begin
+
+end;
+
+Procedure Mapping;
+begin
+
+end;
+
+Procedure Walking;
+begin
+
+end;
+
+Procedure  Runecraft;
+begin
+
+end;
+
+Procedure Antiban;
+begin
+  case Random(200) of
+    10: RandomRClickItem();
+    20: MouseOffClient(Random(5));
+    30: RandomCompass(0, 180, false);
+    40: PickUpMouse;
+    50: ;
+    60: MouseMovingObject();
+    70: SleepAndMoveMouse(200 + Random(50));
+    90: PickUpMouse();
+    100: ;
+  end;
+end;
+
+begin
+  clearDebug();
+  setupSRL();
+
+  repeat
+  Banking;
+  CheckInv;
+  Antiban;
+  Mapping;
+  until false;
+end.
