@@ -1,0 +1,123 @@
+program woodcutScript;
+
+{$DEFINE SMART} // comment this line out if you don't want to use SMART
+{$i srl-6/srl.simba}
+{$i sps/lib/sps-rs3.simba}
+
+const
+  SCRIPT_VERSION = '1';
+
+{ const for walking paths }
+const
+  WALK_TO_WILLOWS = 0;
+  WALK_TO_BANK = 3;
+
+{ const for debugging diffrent things in the program }
+const
+  DEBUG_THE_ERRORS = 0;
+  DEBUG_SUCESS = 1;
+  DEBUG_DETAILS = 2;
+  DEBUG_THE_PLAYER = 3;
+
+{ const for diffrent integers/booleans/progress logging }
+const
+  // Integers
+  P_TOTAL_LOGS = 0;
+
+  // Booleams.
+  P_BREAKS = 0;
+  P_EQUIPPED = 1;
+
+  // Progress Log
+  P_LOADS = 9;
+  P_LOGS = 10;
+  P_LEVELS = 11;
+  P_EXP = 12;
+  P_BREAKS = 13;
+
+{ TTree record used for loading diffrent trees }
+type
+  TTree = record
+    Name: String;
+    UpText: TStringArray;
+    Color: Integer;
+    Hue: Extended;
+    Sat: Extended;
+    Exp: Extended;
+    Tol: Integer;
+    Symbol: Integer;
+    OffsetX: Integer;
+    OffsetY: Integer;
+  end;
+{ global variables used through the WHOLE script }
+  var
+    playerLoads: Integer;
+    falseReason: Array of String; // stores why player turned out false
+
+procedure declarePlayers();
+begin
+  setLength(players, 1);
+  with players[0] do
+  begin
+    loginName := 'username';
+    password := 'password';
+    isActive := true;
+    isMember := true;
+  end
+  currentPlayer := 0;
+end;
+
+procedure teleToClanCamp();
+begin
+    //code here
+end;
+
+procedure runToMine();
+begin
+    //code here
+end;
+
+procedure mineRocks();
+begin
+    //code here
+end;
+
+procedure teleToPortSarim();
+begin
+    //code here
+end;
+
+procedure findDepositBox();
+begin
+    //code here
+end;
+
+procedure depositClay();
+begin
+    //code here
+end;
+
+
+{Main Loop}
+begin
+  clearDebug();
+  smartEnableDrawing := true;
+  setupSRL();
+  declarePlayers();
+
+  if not isLoggedIn() then
+  begin
+    players[currentPlayer].login();
+    exitTreasure();
+    mainScreen.setAngle(MS_ANGLE_HIGH);
+    minimap.setAngle(MM_DIRECTION_NORTH);
+  end;
+
+  teleToClanCamp();
+  runToMine();
+  mineRocks();
+  teleToPortSarim();
+  findDepositBox();
+  depositClay();
+
+end.
