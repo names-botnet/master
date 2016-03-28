@@ -53,8 +53,22 @@ type
   var
     playerLoads: Integer;
     falseReason: Array of String; // stores why player turned out false
+// SETUP TIME SCRIPT AND PLAYER EDIT THIS! //
+// http://stats.villavu.com/ //
 
-procedure declarePlayers();
+const
+  STATS_ID = ''; // http://stats.villavu.com/ username
+  STATS_PASSWORD = ''; // password
+  ENABLE_DEBUG = true; // true prints progress report
+  BREAK_AFTER = 15; // loads until break or switch of acc's
+  SMART_DRAWING = true; // does debugging on the SMART client
+  SRL_LOG = true; // save log of srl
+  SRL_DEBUG = true; // srl debugging true debugs in box
+  IP_SCREEN = false; // takes screenshot of last ip in case of hacks but optional honestly
+  MAX_TIME_PER_TREE = 60; // moves to a diffrent tree after x ammount of time if it cant cut it
+  ANIMATION_SHIFT = 150;  // The maximum player IDLE pixel shift. Can adjust value if player isn't moving between trees or moving too soon. WILL vary depending on player's clothing.
+
+procedure declarePlayers(); // set username and pass for rs
 begin
   setLength(players, 1);
   with players[0] do
@@ -63,9 +77,32 @@ begin
     password := 'password';
     isActive := true;
     isMember := true;
-  end
+  end;
   currentPlayer := 0;
+{
+  with Players[1] do
+  begin
+    Integers[P_TOTAL_LOGS]  := 1000;
+    Booleans[P_TAKE_BREAKS] := True;
+    Booleans[P_EQUIPPED]    := False;
+  end;
+
+  with Players[2] do
+  begin
+    Integers[P_TOTAL_LOGS]  := 1000;
+    Booleans[P_TAKE_BREAKS] := True;
+    Booleans[P_EQUIPPED]    := False;
+  end;
+
+  with Players[3] do
+  begin
+    Integers[P_TOTAL_LOGS]  := 1000;
+    Booleans[P_TAKE_BREAKS] := True;
+    Booleans[P_EQUIPPED]    := False;
+  end;
+}
 end;
+// SCRIPT SETUP OVER DONT EDIT ANYMORE IF YOU DONT KNOW WHAT YOUR DOING //
 
 procedure teleToClanCamp();
 begin
