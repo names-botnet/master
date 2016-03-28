@@ -1,19 +1,57 @@
 program new;
 {$DEFINE SMART} // comment this line out if you don't want to use SMART
 {$i srl-6/srl.simba}
+{$i sps/lib/sps-rs3.simba}
+
  Pure ess  DTM := DTMFromString('mlwAAAHicfcaxCoAgAIThu0R6XpeetaU2C0chd3/QMfzh426XlKP04kPBiQs3qqUHDWEbW2D+kZLs8GuVF2Yd6A8Mmw==');
  Nature    DTM := DTMFromString('mggAAAHicY2NgYHjBysDwGoi/APEHIL4HxDdAfEagHBB/BWJGJgYGZiD+DGQL14kyMDIyI2EmMI0LMOLAEAAAJhUKJg==');
 
+procedure teleToEdge();
+begin
+  if not isLoggedIn() then
+    exit;
+  lodestoneScreen.teleportTo(LOCATION_EDGEVILLE);
+  wait(randomRange(16000,18000));
+end;
+   procedure RunToBank();
+  var
+    RunToBank: TPointArray;
+  begin
+    if not isLoggedIn() then
+      exit;
+    RunToBank := [Point(186, 202), Point(186, 202), Point(203, 209), Point(225, 213), Point(242, 215), Point(258, 224), Point(283, 231), Point(293, 240)];
+    if SPS.walkPath(RunToBank) then
+      minimap.waitPlayerMoving()
+  end;
+procedure findBanker();
+  var
+    m:TTimeMarker;
+begin
+    if m.getTime() > 5000 then
+    Bankscreen.open(BANK_NPC_BLUE);
+end;
+ const
 
- Procedure FindBanker;
- var
-  RunesInInv, x, y: Integer;
+ BANK_PRESET     = '1';
 
- begin
-  if (not isLoggedIn()) or (tabBackpack.count() <= 1) then
-    Exit;
+Procedure GetShitFromBank;
 
- end;
+
+begin
+        MouseBox(bankScreen.getPackSlotBox(1), MOUSE_RIGHT);
+        chooseOption.select(['Fill G', 't p'], 500);
+    Wait(70 + RandomRange(30,40));
+        MouseBox(bankScreen.getPackSlotBox(5), MOUSE_RIGHT);
+        chooseOption.select(['Fill L', 'e p'], 500);
+    Wait(80 + RandomRange(30,40));
+        MouseBox(bankScreen.getPackSlotBox(9), MOUSE_RIGHT);
+        chooseOption.select(['Fill M', 'm p'], 500);
+    Wait(70 + RandomRange(30,40));
+        MouseBox(bankScreen.getPackSlotBox(13), MOUSE_RIGHT);
+        chooseOption.select(['Fill S', 'l p'], 500);
+    Wait(30 + RandomRange(30,40));
+  TypeSend(BANK_PRESET, false);
+end;
 
 function Bank:Boolean;
 var
@@ -94,7 +132,7 @@ end;
 begin
   clearDebug();
   setupSRL();
-
+  SPS.setup('EDGE_BANK', RUNESCAPE_OTHER, 4, 600.0, 0.40);
   repeat
   Banking;
   CheckInv;
