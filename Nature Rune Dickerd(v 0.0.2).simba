@@ -1,10 +1,42 @@
-program new;
+program DemNatures;
 {$DEFINE SMART} // comment this line out if you don't want to use SMART
 {$i srl-6/srl.simba}
 {$i sps/lib/sps-rs3.simba}
 
- Pure ess  DTM := DTMFromString('mlwAAAHicfcaxCoAgAIThu0R6XpeetaU2C0chd3/QMfzh426XlKP04kPBiQs3qqUHDWEbW2D+kZLs8GuVF2Yd6A8Mmw==');
- Nature    DTM := DTMFromString('mggAAAHicY2NgYHjBysDwGoi/APEHIL4HxDdAfEagHBB/BWJGJgYGZiD+DGQL14kyMDIyI2EmMI0LMOLAEAAAJhUKJg==');
+
+ const
+
+Version = 1.0;
+
+
+ //TBOX
+
+DIRTY_WALL: TBox   = [534,194,572,245];
+DIRTY_BANKER: TBox = [534,194,572,245];
+
+ //Banking
+
+BANK_PRESET      = '1';
+
+ //Setup
+
+GLORY_SLOT       = '2';
+ACTION_SLOT      = '1';
+
+
+
+procedure declarePlayers;
+begin
+  currentPlayer := 0;
+  with players[0] do
+  begin
+    //Account Information
+    isActive         := true;
+    loginName        := '';
+    password         := '';
+    bankPin          := '';
+  end;
+end;
 
 procedure teleToEdge();
 begin
@@ -13,7 +45,10 @@ begin
   lodestoneScreen.teleportTo(LOCATION_EDGEVILLE);
   wait(randomRange(16000,18000));
 end;
-   procedure RunToBank();
+
+
+procedure RunToBank();
+
   var
     RunToBank: TPointArray;
   begin
@@ -23,16 +58,21 @@ end;
     if SPS.walkPath(RunToBank) then
       minimap.waitPlayerMoving()
   end;
-procedure findBanker();
-  var
-    m:TTimeMarker;
-begin
-    if m.getTime() > 5000 then
-    Bankscreen.open(BANK_NPC_BLUE);
-end;
- const
 
- BANK_PRESET     = '1';
+
+procedure findBanker;
+var
+  x, y: integer;
+  DIRTY_BANKER: TBox;
+begin
+DIRTY_BANKER := intToBox(534, 194, 572, 245);
+wait(randomrange(750, 1000));
+if mainscreen.findObject(x, y, [3759465], [6],colorsetting(2,0.64,4.37), mainscreen.getCenterPoint(), 24,20,50, ['ank'],DIRTY_BANKER , MOUSE_LEFT) then
+  begin
+      wait(randomrange(3000,5000));
+      end;
+end;
+
 
 Procedure GetShitFromBank;
 
@@ -51,6 +91,7 @@ begin
         chooseOption.select(['Fill S', 'l p'], 500);
     Wait(30 + RandomRange(30,40));
   TypeSend(BANK_PRESET, false);
+
 end;
 
 function Bank:Boolean;
@@ -99,18 +140,96 @@ begin
 
 end;
 
-Procedure Mapping;
+Procedure toWildy;
+begin
+ MouseBox(IntToBox(701,14,722,30),Mouse_Left);
+
+end;
+
+function RedFlag: Boolean;
+begin
+   if (minimap.isFlagPresent(500)) then
+      writeln('Flag is present');
+   Result := True
+   begin
+   if
+   Result := False
+   then
+   terminatescript;
+   end;
+
+end;
+
+
+Procedure wildyWall;
+
+var
+x, y: integer;
+  DIRTY_WALL: TBox;
+
+begin
+DIRTY_WALL := intToBox(220, 4, 376, 183);
+wait(randomrange(750, 1000));
+if mainscreen.findObject(x, y, [2967128], [6],colorsetting(2,0.15,0.26), mainscreen.getCenterPoint(), 24,20,50, ['all'],DIRTY_WALL , MOUSE_LEFT) then
+  begin
+      wait(randomrange(3000,5000));
+      end;
+
+ end;
+
+Procedure mappingToZammy;
+
+var
+    toZammy: TPointArray;
+
+begin
+
+    if not isLoggedIn() then
+      exit;
+    RunToBank := [Point(179, 321), Point(178, 317), Point(182, 289), Point(187, 263), Point(191, 232), Point(189, 209), Point(189, 201), Point(202, 186)];
+    if SPS.walkPath(toZammy) then
+      minimap.waitPlayerMoving()
+  end;
+
+
+
+Procedure findZammy;
+begin
+
+begin
+DIRTY_ZAMMY := intToBox(1, 1, 573,380);
+if mainscreen.findObject(x, y, [1647193], [10],colorsetting(2,0.08,0.62), mainscreen.getCenterPoint(), 24,20,50, ['age'],DIRTY_ZAMMY ,  MOUSE_RIGHT) then
+  begin
+      wait(randomrange(3000,5000));
+      end;
+
+    end;
+
+right click to teleport
+Mage of Zamorak
+end;
+
+Procedure firstEntrance;
 begin
 
 end;
 
-Procedure Walking;
+Procedure enterNatures;
 begin
 
 end;
 
 Procedure  Runecraft;
 begin
+
+end;
+
+Procedure gloryHole;
+begin
+
+TypeSend(GLORY_SLOT, false);
+  wait(randomrange(300,500));
+TypeSend(ACTION_SLOT, false);
 
 end;
 
@@ -133,10 +252,12 @@ begin
   clearDebug();
   setupSRL();
   SPS.setup('EDGE_BANK', RUNESCAPE_OTHER, 4, 600.0, 0.40);
+  teleToEdge();
+  RunToBank();
   repeat
   Banking;
   CheckInv;
   Antiban;
   Mapping;
   until false;
-end.
+end.                                                                           
